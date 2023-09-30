@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os;
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -84,9 +86,16 @@ dependencies {
     tasks.register("cargoBuild$taskPostfix", Exec) {
         // Until https://github.com/bbqsrc/cargo-ndk/pull/13 is merged,
         // this workaround is necessary.
-        commandLine 'sh', '-c', """cd ../../rust && \
-        ANDROID_NDK_HOME="26.0.10792818" cargo ndk \
-            -t armeabi-v7a -t arm64-v8a -t x86 -t x86_64 \
-            -o ../android/app/src/main/jniLibs build $profileMode"""
+        if(Os.isFamily(Os.FAMILY_WINDOWS)) {
+            commandLine 'cmd', '-c', """cd ..\\..\\rust && \
+            ANDROID_NDK_HOME="26.0.10792818" cargo ndk \
+                -t armeabi-v7a -t arm64-v8a -t x86 -t x86_64 \
+                -o ..\\android\\app\\src\\main\\jniLibs build $profileMode"""
+        } else {  // linux
+            commandLine 'sh', '-c', """cd ../../rust && \
+            ANDROID_NDK_HOME="26.0.10792818" cargo ndk \
+                -t armeabi-v7a -t arm64-v8a -t x86 -t x86_64 \
+                -o ../android/app/src/main/jniLibs build $profileMode"""
+        }
     }
 }
