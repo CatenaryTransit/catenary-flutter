@@ -150,6 +150,45 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
           lineOpacity: 0.7,
         ),
         sourceLayer: "notbus");
+
+    await controller.addSymbolLayer(
+        "notbus",
+        "labelrailshapes",
+        const SymbolLayerProperties(
+            symbolPlacement: "line",
+            textField: [
+              Expressions.coalesce,
+              [Expressions.get, "route_label"]
+            ],
+            textColor: [
+              Expressions.concat,
+              "#",
+              [Expressions.get, "text_color"]
+            ],
+            textHaloColor: [
+              Expressions.concat,
+              "#",
+              [Expressions.get, "color"]
+            ],
+            textHaloWidth: 3,
+            textHaloBlur: 0,
+            textSize: [
+              Expressions.interpolate,
+              ['linear'],
+              [Expressions.zoom],
+              8,
+              6,
+              9,
+              7,
+              13,
+              11
+            ]),
+        sourceLayer: "notbus",
+        filter: [
+          "!=",
+          [Expressions.get, "onestop_feed_id"],
+          "f-9-flixbus"
+        ]);
   }
 
   @override
