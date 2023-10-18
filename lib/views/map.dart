@@ -29,6 +29,7 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
     setState(() {
       camPos = mapController!.cameraPosition!;
     });
+
     controller.addListener(() {
       // however, this will listen to any changes to the object
       setState(() {
@@ -54,6 +55,7 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
 
     location.enableBackgroundMode(enable: true);
     print("PERMISSION PASSED?");
+    /*
     setState(() async {
       mapController!.addCircle(CircleOptions(
         circleRadius: 10,
@@ -65,8 +67,89 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
             _locationData?.latitude ?? 0.0, _locationData?.longitude ?? 0.0),
       ));
       _locationData = await location.getLocation();
-    });
-    ;
+    });*/
+
+    await controller.addSource(
+        "busonly",
+        const VectorSourceProperties(
+            url: "https://martin.catenarymaps.org/busonly", minzoom: 6));
+
+    await controller.addSource(
+        "notbus",
+        const VectorSourceProperties(
+            url: "https://martin.catenarymaps.org/notbus", minzoom: 6));
+
+    await controller.addLineLayer(
+        "busonly",
+        "busonlyshapes",
+        LineLayerProperties(
+          lineColor: [
+            Expressions.concat,
+            "#",
+            [Expressions.get, "color"]
+          ],
+          lineWidth: 2,
+          lineOpacity: 0.5,
+        ),
+        sourceLayer: "busonly",
+        filter: [
+          "!=",
+          [Expressions.get, "onestop_feed_id"],
+          "f-9-flixbus"
+        ]);
+
+    await controller.addSymbolLayer(
+        "busonly",
+        "labelbusshapes",
+        const SymbolLayerProperties(
+            symbolPlacement: "line",
+            textField: [
+              Expressions.coalesce,
+              [Expressions.get, "route_label"]
+            ],
+            textColor: [
+              Expressions.concat,
+              "#",
+              [Expressions.get, "text_color"]
+            ],
+            textHaloColor: [
+              Expressions.concat,
+              "#",
+              [Expressions.get, "color"]
+            ],
+            textHaloWidth: 3,
+            textHaloBlur: 0,
+            textSize: [
+              Expressions.interpolate,
+              ['linear'],
+              [Expressions.zoom],
+              8,
+              6,
+              9,
+              7,
+              13,
+              11
+            ]),
+        sourceLayer: "busonly",
+        filter: [
+          "!=",
+          [Expressions.get, "onestop_feed_id"],
+          "f-9-flixbus"
+        ]);
+
+    await controller.addLineLayer(
+        "notbus",
+        "railshapes",
+        LineLayerProperties(
+          lineColor: [
+            Expressions.concat,
+            "#",
+            [Expressions.get, "color"]
+          ],
+          lineWidth: 3,
+          lineOpacity: 0.7,
+        ),
+        sourceLayer: "notbus");
   }
 
   @override
