@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maplibre_gl/mapbox_gl.dart';
 import 'package:location/location.dart';
-import 'dart:ui_web';
+//import 'dart:ui_web';
 
 class CatenaryMapView extends StatefulWidget {
   const CatenaryMapView({super.key});
@@ -18,7 +18,8 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
   late PermissionStatus _permissionGranted;
   LocationData? _locationData;
 
-  CameraPosition camPos = const CameraPosition(target: LatLng(0.0, 0.0), bearing: 0.0, tilt: 0.0, zoom: 0.0);
+  CameraPosition camPos = const CameraPosition(
+      target: LatLng(0.0, 0.0), bearing: 0.0, tilt: 0.0, zoom: 0.0);
 
   Future<void> _onMapCreated(MaplibreMapController controller) async {
     setState(() {
@@ -28,13 +29,12 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
     setState(() {
       camPos = mapController!.cameraPosition!;
     });
-    controller.addListener(() {  // however, this will listen to any changes to the object
+    controller.addListener(() {
+      // however, this will listen to any changes to the object
       setState(() {
         camPos = mapController!.cameraPosition!;
       });
     });
-
-
 
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
@@ -66,7 +66,7 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
       ));
       _locationData = await location.getLocation();
     });
-;
+    ;
   }
 
   @override
@@ -88,17 +88,18 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
               children: [
                 Container(
                   margin: const EdgeInsets.all(35.0),
-                  padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 6.0, horizontal: 12.0),
                   decoration: BoxDecoration(
                     color: Color(0xff0a233f),
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Text(
                     "${camPos.target.latitude.toStringAsFixed(5)}, "
-                        "${camPos.target.longitude.toStringAsFixed(5)} "
-                        "| Z: ${camPos.zoom.toStringAsFixed(2)} "
-                        "| T: ${camPos.tilt.toStringAsFixed(2)}° "
-                        "| B: ${camPos.bearing.toStringAsFixed(2)}°",
+                    "${camPos.target.longitude.toStringAsFixed(5)} "
+                    "| Z: ${camPos.zoom.toStringAsFixed(2)} "
+                    "| T: ${camPos.tilt.toStringAsFixed(2)}° "
+                    "| B: ${camPos.bearing.toStringAsFixed(2)}°",
                     style: const TextStyle(
                       fontSize: 10.0,
                       fontFamily: "consolas",
@@ -118,7 +119,8 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
                 FloatingActionButton(
                   onPressed: () {
                     print("MAP CTRL $mapController");
-                    mapController!.animateCamera(CameraUpdate.bearingTo(0.0), duration: const Duration(seconds: 2));
+                    mapController!.animateCamera(CameraUpdate.bearingTo(0.0),
+                        duration: const Duration(seconds: 2));
                   },
                   foregroundColor: Colors.white,
                   backgroundColor: const Color(0xFF0a233f),
@@ -130,14 +132,12 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
                 const Spacer(),
                 FloatingActionButton(
                   onPressed: () {
-                    if(_locationData != null) {
+                    if (_locationData != null) {
                       mapController!.animateCamera(
                         CameraUpdate.newCameraPosition(
                           CameraPosition(
-                            target: LatLng(
-                                _locationData?.latitude ?? 0.0,
-                                _locationData?.longitude ?? 0.0
-                            ),
+                            target: LatLng(_locationData?.latitude ?? 0.0,
+                                _locationData?.longitude ?? 0.0),
                             zoom: 11.0,
                             bearing: 0.0,
                             tilt: 0.0,
@@ -156,7 +156,6 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
               ],
             ),
           ],
-        )
-    );
+        ));
   }
 }
