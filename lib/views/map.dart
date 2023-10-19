@@ -55,24 +55,27 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
 
     location.enableBackgroundMode(enable: true);
     print("PERMISSION PASSED?");
-    /*
+
     setState(() async {
-      mapController!.addCircle(CircleOptions(
-        circleRadius: 10,
-        circleColor: '#2563EB',
-        circleOpacity: 1,
-        circleStrokeWidth: 1,
-        circleStrokeColor: '#ffffff',
-        geometry: LatLng(
-            _locationData?.latitude ?? 0.0, _locationData?.longitude ?? 0.0),
-      ));
       _locationData = await location.getLocation();
-    });*/
+    });
 
     await controller.addSource(
         "busonly",
         const VectorSourceProperties(
             url: "https://martin.catenarymaps.org/busonly", minzoom: 6));
+
+    await controller.addSource(
+        "geolocationcircle",
+        const GeojsonSourceProperties(
+          data: {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [0, 0]
+            }
+          },
+        ));
 
     await controller.addSource(
         "notbus",
