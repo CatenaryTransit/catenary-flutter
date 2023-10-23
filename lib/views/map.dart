@@ -263,7 +263,7 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
                           CameraPosition(
                             target: LatLng(_locationData?.latitude ?? 0.0,
                                 _locationData?.longitude ?? 0.0),
-                            zoom: 11.0,
+                            zoom: 12.0,
                             bearing: 0.0,
                             tilt: 0.0,
                           ),
