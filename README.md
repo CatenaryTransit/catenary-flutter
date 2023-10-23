@@ -6,6 +6,10 @@ Cross-platform build of Catenary Maps for iOS, Android, and Web.
 `cargo install flutter_rust_bridge_codegen`
 `cargo install cargo-expand`
 
+### Signing during Release Compilation (Android)
+You'll need to add `android/key.properties` with a path to your signing key and it's password.
+See https://docs.flutter.dev/deployment/android#signing-the-app for more information
+
 ### Developers Common Installation / Running problems
 
 #### No Configuration Found in Android Studio
