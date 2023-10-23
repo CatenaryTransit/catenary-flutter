@@ -26,6 +26,18 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
       mapController = controller;
     });
 
+    await controller.addSource(
+        "geolocationcircle",
+        const GeojsonSourceProperties(
+          data: {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [0, 0]
+            }
+          },
+        ));
+
     setState(() {
       camPos = mapController!.cameraPosition!;
     });
@@ -64,18 +76,6 @@ class _CatenaryMapViewState extends State<CatenaryMapView> {
         "busonly",
         const VectorSourceProperties(
             url: "https://martin.catenarymaps.org/busonly", minzoom: 6));
-
-    await controller.addSource(
-        "geolocationcircle",
-        const GeojsonSourceProperties(
-          data: {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [0, 0]
-            }
-          },
-        ));
 
     await controller.addSource(
         "notbus",
