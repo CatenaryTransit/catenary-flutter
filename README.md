@@ -1,6 +1,8 @@
 # catenary-flutter
 Cross-platform build of Catenary Maps for iOS, Android, and Web.
 
+(Rust is still broken rip)
+
 ### Instructions
 
 `cargo install flutter_rust_bridge_codegen`
